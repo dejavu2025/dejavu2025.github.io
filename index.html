@@ -1,529 +1,226 @@
-<script src="http://www.google.com/jsapi" type="text/javascript"></script> 
-<script type="text/javascript">google.load("jquery", "1.3.2");</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style type="text/css">
-	body {
-		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
-		font-weight:300;
-		font-size:18px;
-		margin-left: auto;
-		margin-right: auto;
-		width: 1100px;
-		background-color : #EFEFEF;
-	}
-	.content{
-    width : 1110px;
-    padding : 25px 50px;
-    margin : 25px auto;
-    background-color : #fff;
-    box-shadow: 0px 0px 10px #999;
-    border-radius: 15px; 
-	}
-	h1 {
-		font-weight:300;
-	}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dejavu: Post‑Deployment Learning for Embodied Agents via Experience Feedback</title>
+  <meta name="description" content="ICLR 2026 under review. Dejavu (EFN): a post-deployment learning framework that augments frozen VLA policies with an Experience Feedback Network.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- Bulma (used by nerfies.github.io template) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.4/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root { --brand:#4F46E5; --soft:#EEF2FF; }
+    html, body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
+    .hero.is-light { background: linear-gradient(180deg, var(--soft), white); }
+    .publication-title { font-weight: 800; letter-spacing: -0.02em; }
+    .author-block a { color:#363636; text-decoration: underline dotted #bdbdbd; }
+    .teaser { border-radius: 12px; box-shadow: 0 6px 32px rgba(0,0,0,0.08); }
+    .btn-row a.button { margin: 6px 8px 0 0; }
+    .section-title { font-weight: 700; font-size: 1.6rem; letter-spacing:-0.01em; }
+    .figure { text-align:center; }
+    .figure img { border-radius: 12px; box-shadow: 0 6px 28px rgba(0,0,0,0.08); }
+    code.bibtex { white-space: pre; display:block; padding:1rem; background:#0f172a; color:#e5e7eb; border-radius:12px; overflow:auto; }
+    .tag.is-venue { background: #E0E7FF; color:#1e1b4b; border-radius:999px; }
+    .footer { background: #fafafa; }
+  </style>
+</head>
+<body>
+  <!-- Hero -->
+  <section class="hero is-light">
+    <div class="hero-body">
+      <div class="container">
+        <div class="has-text-centered">
+          <h1 class="title is-2 publication-title">Dejavu: Post‑Deployment Learning for Embodied Agents<br>via Experience Feedback</h1>
+          <p class="subtitle is-5">
+            <span class="tag is-venue is-medium">ICLR 2026 — under review</span>
+          </p>
+          <p class="author-block">
+            <em>Anonymous authors</em>
+          </p>
+          <p class="btn-row">
+            <a class="button is-link is-light" href="assets/dejavu.pdf" target="_blank"><span class="icon"><i class="ai ai-arxiv"></i></span><span>Paper (PDF)</span></a>
+            <a class="button is-link is-light" href="assets/dejavu_efn.zip" target="_blank"><span class="icon"><i class="fa-solid fa-globe"></i></span><span>Code</span></a>
+            <a class="button is-link is-light" href="#bibtex"><span class="icon"><i class="fa-solid fa-quote-right"></i></span><span>BibTeX</span></a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-	.row {
-		display: flex;
-	  }
-	  
-	/* Create three equal columns that sits next to each other */
-	.column {
-	flex: 50%;
-	padding: 5px;
-	}
+  <!-- Teaser -->
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <figure class="image is-16by9 teaser">
+            <!-- Replace with your real teaser image or video poster -->
+            <img src="assets/teaser.png" alt="EFN augments a frozen VLA with retrieved experience trajectories and residual action corrections.">
+          </figure>
+          <p class="has-text-grey is-size-6 has-text-centered" style="margin-top:.5rem;">
+            Figure 1. A frozen VLA is augmented by an <strong>Experience Feedback Network (EFN)</strong> that retrieves task‑relevant trajectories,
+            predicts a residual correction, and steers the next observation toward the retrieved successor frame.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    .imageDiv img { 
-        box-shadow: 1px 1px 10px rgb(255, 255, 255); 
-        margin: 2px;
-        max-height: 50px;
-        cursor: pointer;
-    display:inline-block;
-    *display:inline;
-    *zoom:1;
-    vertical-align:top;
-    }
+  <!-- Abstract -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Abstract</h2>
+      <div class="content is-size-5">
+        <p>
+          We present <strong>Dejavu</strong>, a general post‑deployment learning framework that augments a frozen Vision‑Language‑Action (VLA) policy
+          with an <em>Experience Feedback Network (EFN)</em> and a live <em>experience bank</em>. EFN retrieves a contextually successful prior step
+          and conditions action prediction on this guidance by outputting a residual correction that refines the base policy’s action.
+          EFN is optimized with reinforcement learning using a dense, similarity‑based reward that compares the realized next observation
+          to the next observation in the retrieved trajectory. During deployment, the agent continually appends successful rollouts to its
+          memory, enabling measurable improvement without modifying the backbone weights.
+        </p>
+      </div>
+      <div class="buttons btn-row">
+        <a class="button is-link" href="assets/dejavu.pdf" target="_blank"><span class="icon"><i class="fa-solid fa-file-pdf"></i></span><span>Read the paper</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Links -->
+  <!-- <section class="section">
+    <div class="container">
+      <h2 class="section-title">Resources</h2>
+      <div class="buttons btn-row">
+        <a class="button is-primary" href="assets/dejavu.pdf" target="_blank"><span class="icon"><i class="fa-solid fa-file-pdf"></i></span><span>Paper (PDF)</span></a>
+        <a class="button is-primary is-light" href="https://dejavu2025.github.io/" target="_blank"><span class="icon"><i class="fa-solid fa-globe"></i></span><span>Demo</span></a>
+        <a class="button is-primary is-light" href="assets/poster.pdf" target="_blank"><span class="icon"><i class="fa-solid fa-image"></i></span><span>Poster</span></a>
+        <a class="button is-primary is-light" href="assets/slides.pdf" target="_blank"><span class="icon"><i class="fa-solid fa-person-chalkboard"></i></span><span>Slides</span></a>
+        <a class="button is-primary is-light" href="#bibtex"><span class="icon"><i class="fa-solid fa-quote-right"></i></span><span>BibTeX</span></a>
+      </div>
+    </div>
+  </section> -->
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Paper</h2>
+        <div class="content has-text-centered">
+          <iframe src="assets/dejavu.pdf#view=FitH" style="width:100%; height:600px; border:1px solid #eee; border-radius: 8px;"></iframe>
+          <p class="has-text-grey is-size-7" style="margin-top: .5rem;">If the preview does not load, use the PDF button above.</p>
+        </div>
+    </div>
+  </section>
 
 
-	tr.spaceUnder>td {
-		padding-bottom: 3em;
-	}
-
-	.paddingBetweenRows td
-	{
-		padding:0 15px;
-		border-spacing: 100px;
-	}
-
-
-
-
-
-    /*
-      Rollover Image
-     */
-	 .figure {
-        position: relative;
-        max-width: 100%;
-    }
-    .figure img.image-hover {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      object-fit: contain;
-      opacity: 0;
-      transition: opacity .2s;
-    }
-    .figure:hover img.image-hover {
-      opacity: 1;
-    }
-	
-	* {box-sizing:border-box}
-
-	/* Slideshow container */
-	.slideshow-container {
-	max-width: 232;
-	position: relative;
-	margin: auto;
-	}
-
-	/* Hide the images by default */
-	.mySlides {
-	display: none;
-	}
-
-	/* Next & previous buttons */
-	.prev, .next {
-	cursor: pointer;
-	position: absolute;
-	top: 50%;
-	width: auto;
-	margin-top: -22px;
-	padding: 16px;
-	color: white;
-	font-weight: bold;
-	font-size: 18px;
-	transition: 0.6s ease;
-	border-radius: 0 3px 3px 0;
-	user-select: none;
-	}
-
-	/* Position the "next button" to the right */
-	.next {
-	right: 0;
-	border-radius: 3px 0 0 3px;
-	}
-
-	/* On hover, add a black background color with a little bit see-through */
-	.prev:hover, .next:hover {
-	background-color: rgba(0,0,0,0.8);
-	}
-
-	/* Caption text */
-	.text {
-	color: #f2f2f2;
-	font-size: 15px;
-	padding: 8px 12px;
-	position: absolute;
-	bottom: 8px;
-	width: 100%;
-	text-align: center;
-	}
-
-	/* Number text (1/3 etc) */
-	.numbertext {
-	color: #f2f2f2;
-	font-size: 12px;
-	padding: 8px 12px;
-	position: absolute;
-	top: 0;
-	}
-
-	/* The dots/bullets/indicators */
-	.dot {
-	cursor: pointer;
-	height: 15px;
-	width: 15px;
-	margin: 0 2px;
-	background-color: #bbb;
-	border-radius: 50%;
-	display: inline-block;
-	transition: background-color 0.6s ease;
-	}
-
-	.active, .dot:hover {
-	background-color: #717171;
-	}
-
-	/* Fading animation */
-	.fade {
-	}
-
-	@keyframes fade {
-	from {opacity: .4}
-	to {opacity: 1}
-	}
+  <!-- Method -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Method Overview</h2>
+      <div class="content">
+        <p>
+          An <strong>experience</strong> is defined as a synchronized trajectory of vision, language, and action. At each step, EFN retrieves a
+          task‑filtered candidate from the bank using language‑conditioned visual similarity, then predicts a <em>residual action</em> that is
+          added to the base VLA output. A dense semantic reward encourages the next observation to resemble the successor frame from
+          the retrieved experience while regularizing residual magnitude and discouraging idling. We train EFN with <em>Soft Actor–Critic</em>
+          (SAC) and deploy with deterministic residual corrections.
+        </p>
+      </div>
+      <div class="columns is-multiline">
+        <div class="column is-6">
+          <div class="box figure">
+            <img src="assets/train.png" alt="Training pipeline: retrieval + residual policy learning with similarity rewards.">
+            <p class="has-text-grey is-size-7" style="margin-top:.5rem;">Training: retrieve, correct, and optimize with dense similarity rewards.</p>
+          </div>
+        </div>
+        <div class="column is-6">
+          <div class="box figure">
+            <img src="assets/test.png" alt="Inference pipeline: instruction‑filtered retrieval and online experience growth.">
+            <p class="has-text-grey is-size-7" style="margin-top:.5rem;">Inference: instruction‑filtered retrieval and online experience growth.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 
 
+  <!-- Results -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Results</h2>
+      <div class="content">
+        <p>
+          On <em>LIBERO</em> simulation and a real‑world <em>AgiBot‑G1</em> platform, EFN consistently increases success rate and reduces steps across
+          VLA backbones (OpenVLA, UniVLA), with further gains from larger experience banks. Improvements are most pronounced on
+          long‑horizon tasks, indicating recall‑guided residuals effectively truncate redundant behavior.
+        </p>
+      </div>
+        <div class="box figure">
+            <img src="assets/tab1.png" alt="LIBERO results">
+            <p class="has-text-grey is-size-7" style="margin-top:.5rem;">LIBERO: Deployment performance with and without EFN.</p>
+        </div>
+        <div class="box figure">
+            <img src="assets/tab2.png" alt="Real robot results">
+            <p class="has-text-grey is-size-7" style="margin-top:.5rem;">Real‑world: AgiBot‑G1 with GO‑1 across three tasks.</p>
+        </div>
+    </div>
+  </section>
 
-	.disclaimerbox {
-		background-color: #eee;		
-		border: 1px solid #eeeeee;
-		border-radius: 10px ;
-		-moz-border-radius: 10px ;
-		-webkit-border-radius: 10px ;
-		padding: 20px;
-	}
+  <!-- Paper teaser / video (optional) -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Demos</h2>
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <div class="box">
+            <video class="teaser" controls playsinline>
+              <source src="assets/putbottle.mp4" type="video/mp4">
+            </video>
+            <video class="teaser" controls playsinline>
+              <source src="assets/sortitem.mp4" type="video/mp4">
+            </video>
+            <video class="teaser" controls playsinline>
+              <source src="assets/addgoods.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-	video.header-vid {
-		height: 140px;
-		border: 1px solid black;
-		border-radius: 10px ;
-		-moz-border-radius: 10px ;
-		-webkit-border-radius: 10px ;
-	}
-	
-	img.header-img {
-		height: 140px;
-		border: 1px solid black;
-		border-radius: 10px ;
-		-moz-border-radius: 10px ;
-		-webkit-border-radius: 10px ;
-	}
-	
-	img.rounded {
-		border: 1px solid #eeeeee;
-		border-radius: 10px ;
-		-moz-border-radius: 10px ;
-		-webkit-border-radius: 10px ;
-	}
-	
-	a:link,a:visited
-	{
-		color: #1367a7;
-		text-decoration: none;
-	}
-	a:hover {
-		color: #208799;
-	}
-	
-	td.dl-link {
-		height: 160px;
-		text-align: center;
-		font-size: 22px;
-	}
-	
-	.layered-paper-big { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
-		box-shadow:
-		        0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
-		        5px 5px 0 0px #fff, /* The second layer */
-		        5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
-		        10px 10px 0 0px #fff, /* The third layer */
-		        10px 10px 1px 1px rgba(0,0,0,0.35), /* The third layer shadow */
-		        15px 15px 0 0px #fff, /* The fourth layer */
-		        15px 15px 1px 1px rgba(0,0,0,0.35), /* The fourth layer shadow */
-		        20px 20px 0 0px #fff, /* The fifth layer */
-		        20px 20px 1px 1px rgba(0,0,0,0.35), /* The fifth layer shadow */
-		        25px 25px 0 0px #fff, /* The fifth layer */
-		        25px 25px 1px 1px rgba(0,0,0,0.35); /* The fifth layer shadow */
-		margin-left: 10px;
-		margin-right: 45px;
-	}
+  <!-- Citation -->
+  <section class="section" id="bibtex">
+    <div class="container">
+      <h2 class="section-title">BibTeX</h2>
+      <code class="bibtex">@inproceedings{dejavu_iclr2026,
+  title     = {Dejavu: Post-Deployment Learning for Embodied Agents via Experience Feedback},
+  author    = {Anonymous},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2026},
+  note      = {under double-blind review},
+  url       = {https://dejavu2025.github.io/}
+}</code>
+    </div>
+  </section>
 
-	.paper-big { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
-		box-shadow:
-		        0px 0px 1px 1px rgba(0,0,0,0.35); /* The top layer shadow */
+  <!-- Acknowledgements -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Acknowledgements</h2>
+      <p class="content">
+        This website follows the structure of the <em>nerfies.github.io</em> academic project template.
+      </p>
+    </div>
+  </section>
 
-		margin-left: 10px;
-		margin-right: 45px;
-	}
-
-
-	.layered-paper { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
-		box-shadow:
-		        0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
-		        5px 5px 0 0px #fff, /* The second layer */
-		        5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
-		        10px 10px 0 0px #fff, /* The third layer */
-		        10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
-		margin-top: 5px;
-		margin-left: 10px;
-		margin-right: 30px;
-		margin-bottom: 5px;
-	}
-	
-	.vert-cent {
-		position: relative;
-	    top: 50%;
-	    transform: translateY(-50%);
-	}
-	
-	hr
-	{
-		border: 0;
-		height: 1px;
-		background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-	}
-
-	table {
-		border-collapse: collapse;
-	}
-	.vtable {
-		border-collapse:separate;
-		border-spacing:10px 15px;
-	}
-	.rtable {
-		margin-left: 2em;
-		border-collapse:separate;
-		border-spacing:10px 15px;
-	}
-</style>
-
-
-<style>
-.tg {
-  border-collapse: collapse;
-  width: 100%;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 20px auto;
-}
-
-.tg th {
-  background: #b2c4d6 ;
-  color: white;
-  font-weight: 600;
-  padding: 12px 10px;
-  text-align: center;
-  vertical-align: middle;
-  border: 1px solid #eeeeee;
-}
-
-.tg thead th[colspan="2"],
-.tg thead th:first-child {
-  background: #c6d7e7;
-}
-
-.tg td {
-  padding: 10px;
-  border: 1px solid #ecf0f1;
-  text-align: center;
-  transition: background 0.2s;
-}
-
-.tg tbody tr:nth-child(even) {
-  background-color: #f8f9fa;
-}
-
-.tg tbody tr:hover {
-  background-color: #e8f4fc;
-}
-
-.tg .tg-uzvj {
-  font-weight: bold;
-  color: #2980b9;
-  position: relative;
-}
-
-.tg td:first-child + td {
-  font-weight: bold;
-  color: #27ae60; 
-}
-
-.tg td:first-child + td::after {
-  content: '';
-}
-
-.tg td:first-child + td:contains("×") {
-  color: #e74c3c; 
-}
-
-.tg td:first-child + td:contains("×")::after {
-  content: '';
-}
-
-.tg-headers-group {
-  background: #3498db;
-}
-
-.tg td:not(:first-child):not(:nth-child(2)) {
-  text-align: middle;
-  padding-right: 15px;
-  font-family: 'Times New Roman', monospace; 
-}
-
-.tg tbody {
-  border-top: 2px solid #2c3e50;
-}
-
-@media (max-width: 768px) {
-  .tg th,
-  .tg td {
-    padding: 8px 5px;
-    font-size: 13px;
-  }
-}
-</style>
-
-
-<style>
-  /* 内部导航专用样式 */
-  .internal-nav {
-    margin: 40px auto;
-    padding: 25px;
-    text-align: center;
-    max-width: 800px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    border: 1px solid #e0e0e0;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .internal-nav::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #3498db, #9b59b6, #2ecc71, #e74c3c);
-    z-index: 1;
-  }
-  
-  .nav-title {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    font-size: 1.8rem;
-    margin-bottom: 28px;
-    color: #2c3e50;
-    background: white;
-    padding: 8px 25px;
-    border-radius: 50px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  }
-  
-  .nav-title i {
-    margin-right: 15px;
-    color: #3498db;
-    font-size: 1.5rem;
-  }
-  
-  .nav-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 15px;
-  }
-  
-  .nav-card {
-    background: white;
-    border-radius: 12px;
-    padding: 25px 15px;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    border: 1px solid #eaeaea;
-    position: relative;
-    overflow: hidden;
-    z-index: 2;
-  }
-  
-  .nav-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 5px;
-    height: 100%;
-    background: #f1f1f1;
-    z-index: -1;
-    transition: width 0.3s ease;
-  }
-  
-  .nav-card:hover {
-    transform: translateY(-7px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.1);
-    border-color: #d5d5d5;
-  }
-  
-  .nav-card:hover::before {
-    width: 100%;
-    background: linear-gradient(to right, rgba(52, 152, 219, 0.1), transparent);
-  }
-  
-  .nav-card i {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    color: #3498db;
-    transition: all 0.3s ease;
-  }
-  
-  .nav-card:hover i {
-    transform: scale(1.2);
-    color: #e74c3c;
-  }
-  
-  .nav-card h3 {
-    margin: 0 0 10px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2c3e50;
-  }
-  
-  .nav-card p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: #7f8c8d;
-    opacity: 0.8;
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    height: 100%;
-  }
-  
-  @media (max-width: 600px) {
-    .nav-grid {
-      grid-template-columns: 1fr;
-    }
-    
-    .nav-title {
-      font-size: 1.5rem;
-    }
-  }
-</style>
-
-
-<html>
-  <head>
-		<title>MORE</title>
-		<meta property="og:title" content="MORE" />
-  </head>
-
-  <body>
-	<div class="content">
-		
-		<br>
-          <center>
-          	<span style="font-size:36px">Dejavu: Post-Deployment Learning for Embodied Agents via Experience Feedback</span>
-			<br>
-          		<span style="font-size:20px"> ICLR 2026</span>
-			<br><br>
-  
-</div>
-
-
-
-
-
-
-
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <strong>Dejavu (EFN)</strong> — ICLR 2026 (under review). Site template inspired by <em>nerfies.github.io</em>.
+      </p>
+    </div>
+  </footer>
 </body>
 </html>
- 
