@@ -26,8 +26,55 @@
     code.bibtex { white-space: pre; display:block; padding:1rem; background:#0f172a; color:#e5e7eb; border-radius:12px; overflow:auto; }
     .tag.is-venue { background: #E0E7FF; color:#1e1b4b; border-radius:999px; }
     .footer { background: #fafafa; }
+    .card .teaser {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 6px 24px rgba(0,0,0,.06);
+      display: block;
+      margin-top: .5rem;
+    }
+    .card ol { padding-left: 1.2rem; }
+    .card .content { margin-bottom: .5rem; }
   </style>
 </head>
+
+
+<script>
+(function () {
+  const videos = Array.from(document.querySelectorAll('video.auto-poster'));
+  if (!videos.length) return;
+
+  function capturePosterFor(v) {
+    if (!v.videoWidth || !v.videoHeight) return;
+    const canvas = document.createElement('canvas');
+    canvas.width = v.videoWidth;
+    canvas.height = v.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(v, 0, 0, canvas.width, canvas.height);
+    v.setAttribute('poster', canvas.toDataURL('image/png'));
+    // 回到起点，避免停留在 0.1s
+    v.pause();
+    v.currentTime = 0;
+  }
+
+  function tryCapture(v) {
+    const seekTo = Math.min(0.1, (v.duration || 1) - 0.1);
+    const onSeeked = () => { v.removeEventListener('seeked', onSeeked); capturePosterFor(v); };
+    v.addEventListener('seeked', onSeeked, { once: true });
+    try { v.currentTime = seekTo; } catch (e) { /* 某些浏览器需等 meta/data 事件后再试 */ }
+  }
+
+  videos.forEach(v => {
+    if (v.readyState >= 2) {
+      tryCapture(v);
+    } else {
+      v.addEventListener('loadedmetadata', () => tryCapture(v), { once: true });
+      v.addEventListener('loadeddata', () => tryCapture(v), { once: true });
+    }
+  });
+})();
+</script>
+
 <body>
   <!-- Hero -->
   <section class="hero is-light">
@@ -169,26 +216,129 @@
   </section>
 
   <!-- Paper teaser / video (optional) -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">Demos</h2>
-      <div class="columns is-centered">
-        <div class="column is-10">
-          <div class="box">
-            <video class="teaser" controls playsinline>
-              <source src="assets/putbottle.mp4" type="video/mp4">
-            </video>
-            <video class="teaser" controls playsinline>
-              <source src="assets/sortitem.mp4" type="video/mp4">
-            </video>
-            <video class="teaser" controls playsinline>
-              <source src="assets/addgoods.mp4" type="video/mp4">
+<section class="section" id="demos">
+  <div class="container">
+    <h2 class="section-title">Demos (1 × speed)</h2>
+
+    <div class="columns is-multiline">
+
+      <!-- AddGoods - Trial A -->
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> AddGoods · Trial A
+            </p>
+          </header>
+          <div class="card-content">
+            <p class="content">
+              <strong>Description:</strong> Move the topmost milk can from a vertical stack to the shelf one level above.
+            </p>
+            <ol class="content" style="margin-top:-.5rem;">
+              <li>Grasp the top milk can with the <em>right</em> arm.</li>
+              <li>Lift and move to the upper shelf.</li>
+              <li>Place the can at the target position.</li>
+              <li>Release the right-arm gripper.</li>
+            </ol>
+            <video class="teaser auto-poster" preload="metadata" controls playsinline crossorigin="anonymous">
+              <source src="assets/addgoods1.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
+              <!-- <source src="assets/addgoods1.webm" type="video/webm"> -->
+              Your browser does not support inline video.
+              <a href="assets/addgoods1.mp4" download>Download MP4</a>.
             </video>
           </div>
         </div>
       </div>
+
+      <!-- AddGoods - Trial B -->
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> AddGoods · Trial B
+            </p>
+          </header>
+          <div class="card-content">
+            <p class="content">
+              <strong>Description:</strong> Move a pen holder that is stacked on a tissue pack to the shelf one level above.
+            </p>
+            <ol class="content" style="margin-top:-.5rem;">
+              <li>Grasp the pen holder from the top of the tissue pack with the <em>right</em> arm.</li>
+              <li>Lift and move to the upper shelf.</li>
+              <li>Place the pen holder at the target position.</li>
+              <li>Release the right-arm gripper.</li>
+            </ol>
+            <video class="teaser auto-poster" preload="metadata" controls playsinline crossorigin="anonymous">
+              <source src="assets/addgoods2.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
+              <!-- <source src="assets/addgoods2.webm" type="video/webm"> -->
+              Your browser does not support inline video.
+              <a href="assets/addgoods2.mp4" download>Download MP4</a>.
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <!-- PutBottle -->
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> PutBottle
+            </p>
+          </header>
+          <div class="card-content">
+            <p class="content">
+              <strong>Description:</strong> Grasp a drink bottle from the shelf with the right arm, place it next to similar items on the shelf, and release the gripper.
+            </p>
+            <ol class="content" style="margin-top:-.5rem;">
+              <li>Grasp the drink bottle from the shelf with the <em>right</em> arm.</li>
+              <li>Move to the section with similar items.</li>
+              <li>Place the bottle next to similar items.</li>
+              <li>Release the right-arm gripper.</li>
+            </ol>
+            <video class="teaser auto-poster" preload="metadata" controls playsinline crossorigin="anonymous">
+              <source src="assets/putbottle.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
+              <!-- <source src="assets/putbottle.webm" type="video/webm"> -->
+              Your browser does not support inline video.
+              <a href="assets/putbottle.mp4" download>Download MP4</a>.
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <!-- SortItem -->
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> SortItem
+            </p>
+          </header>
+          <div class="card-content">
+            <p class="content">
+              <strong>Description:</strong> Pick up a drink bottle from a small tabletop with the right arm and place it on the shelf.
+            </p>
+            <ol class="content" style="margin-top:-.5rem;">
+              <li>Pick up a drink bottle from the tabletop with the <em>right</em> arm.</li>
+              <li>Move to the target shelf position.</li>
+              <li>Place the bottle on the shelf.</li>
+              <li>Release the right-arm gripper.</li>
+            </ol>
+            <video class="teaser auto-poster" preload="metadata" controls playsinline crossorigin="anonymous">
+              <source src="assets/sortitem.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
+              <!-- <source src="assets/sortitem.webm" type="video/webm"> -->
+              Your browser does not support inline video.
+              <a href="assets/sortitem.mp4" download>Download MP4</a>.
+            </video>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
+
+
 
   <!-- Citation -->
   <section class="section" id="bibtex">
