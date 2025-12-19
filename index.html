@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dejavu: Post‑Deployment Learning for Embodied Agents via Experience Feedback</title>
-  <meta name="description" content="ICLR 2026 under review. Dejavu (EFN): a post-deployment learning framework that augments frozen VLA policies with an Experience Feedback Network.">
+  <title>Dejavu: Towards Experience Feedback Learning for Embodied Intelligence</title>
+  <meta name="description" content="CVPR 2026 under review. Dejavu (EFN): a post-deployment learning framework that augments frozen VLA policies with an Experience Feedback Network.">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <!-- Bulma (used by nerfies.github.io template) -->
@@ -35,6 +35,36 @@
     }
     .card ol { padding-left: 1.2rem; }
     .card .content { margin-bottom: .5rem; }
+    .authors{
+      margin-top: .75rem;
+      text-align: center;         /* 常见学术主页风格 */
+    }
+
+    .author-line{
+      margin: .1rem 0;
+      line-height: 1.45;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #2b2b2b;
+    }
+
+    .affiliation{
+      margin-top: .35rem;
+      font-size: .95rem;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .authors a{
+      color:#2b2b2b;
+      text-decoration: none;
+      border-bottom: 1px dotted #bdbdbd;
+      padding-bottom: 1px;
+    }
+    .authors a:hover{
+      border-bottom-style: solid;
+    }
+
   </style>
 </head>
 
@@ -81,16 +111,24 @@
     <div class="hero-body">
       <div class="container">
         <div class="has-text-centered">
-          <h1 class="title is-2 publication-title">Dejavu: Dejavu: Towards Experience Feedback Learning for Embodied Intelligence</h1>
-          <p class="subtitle is-5">
+          <h1 class="title is-2 publication-title">Dejavu: Towards Experience Feedback Learning for Embodied Intelligence</h1>
+          <!-- <p class="subtitle is-5">
             <span class="tag is-venue is-medium">CVPR 2026 — under review</span>
-          </p>
-          <p class="author-block">
-            <em>Anonymous authors</em>
-          </p>
+          </p> -->
+        <div class="authors">
+          <div class="author-line">
+            Shaokai Wu, Yanbiao Ji, Qiuchang Li, Zhiyi Zhang, Qichen He,
+          </div>
+          <div class="author-line">
+            Wenyuan Xie, Guodong Zhang, Bayram Bayramli, Yue Ding, Hongtao Lu
+          </div>
+          <div class="affiliation">
+            School of Computer Science, Shanghai Jiao Tong University
+          </div>
+        </div>
           <p class="btn-row">
             <a class="button is-link is-light" href="assets/dejavu.pdf" target="_blank"><span class="icon"><i class="ai ai-arxiv"></i></span><span>Paper (PDF)</span></a>
-            <a class="button is-link is-light" href="assets/dejavu_efn.zip" target="_blank"><span class="icon"><i class="fa-solid fa-globe"></i></span><span>Code</span></a>
+            <a class="button is-link is-light" href="assets/code.zip" target="_blank"><span class="icon"><i class="fa-solid fa-globe"></i></span><span>Code</span></a>
             <a class="button is-link is-light" href="#bibtex"><span class="icon"><i class="fa-solid fa-quote-right"></i></span><span>BibTeX</span></a>
           </p>
         </div>
@@ -174,161 +212,157 @@
           (SAC) and deploy with deterministic residual corrections.
         </p>
       </div>
-      <div class="columns is-multiline">
-        <div class="column is-6">
           <div class="box figure">
-            <img src="assets/train.png" alt="Training pipeline: retrieval + residual policy learning with similarity rewards.">
-            <p class="has-text-grey is-size-7" style="margin-top:.5rem;">Training: retrieve, correct, and optimize with dense similarity rewards.</p>
+            <img src="assets/pipeline.png" alt="Training pipeline: retrieval + residual policy learning with similarity rewards.">
+            <p class="has-text-grey is-size-9" style="margin-top:.5rem;">Training: retrieve, correct, and optimize with dense similarity rewards. Inference: instruction‑filtered retrieval and online experience growth.</p>
           </div>
-        </div>
-        <div class="column is-6">
-          <div class="box figure">
-            <img src="assets/test.png" alt="Inference pipeline: instruction‑filtered retrieval and online experience growth.">
-            <p class="has-text-grey is-size-7" style="margin-top:.5rem;">Inference: instruction‑filtered retrieval and online experience growth.</p>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
 
 
   <!-- Results -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">Results</h2>
-      <div class="content">
-        <p>
-          On <em>LIBERO</em> simulation and a real‑world <em>AgiBot‑G1</em> platform, EFN consistently increases success rate and reduces steps across
-          VLA backbones (OpenVLA, UniVLA), with further gains from larger experience banks. Improvements are most pronounced on
-          long‑horizon tasks, indicating recall‑guided residuals effectively truncate redundant behavior.
-        </p>
-      </div>
-        <div class="box figure">
-            <img src="assets/tab1.png" alt="LIBERO results">
-            <p class="has-text-grey is-size-7" style="margin-top:.5rem;">LIBERO: Deployment performance with and without EFN.</p>
-        </div>
-        <div class="box figure">
-            <img src="assets/tab2.png" alt="Real robot results">
-            <p class="has-text-grey is-size-7" style="margin-top:.5rem;">Real‑world: AgiBot‑G1 with GO‑1 across three tasks.</p>
-        </div>
-    </div>
-  </section>
-
-  <!-- Paper teaser / video (optional) -->
 <section class="section" id="demos">
   <div class="container">
     <h2 class="section-title">Demos (1 × speed)</h2>
 
     <div class="columns is-multiline">
 
-      <!-- AddGoods - Trial A -->
+      <!-- DrawerStore - with EFN -->
       <div class="column is-12">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
-              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> AddGoods · Trial A
+              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> DrawerStore · with EFN
             </p>
           </header>
           <div class="card-content">
             <p class="content">
-              <strong>Description:</strong> Move the topmost milk can from a vertical stack to the shelf one level above.
+              <strong>Description:</strong> Open the drawer with the left arm, pick up the napkin packet with the right arm, hand it to the left arm, and store it inside the drawer. This demo shows a smooth, decisive execution enabled by EFN.
             </p>
             <ol class="content" style="margin-top:-.5rem;">
-              <li>Grasp the top milk can with the <em>right</em> arm.</li>
-              <li>Lift and move to the upper shelf.</li>
-              <li>Place the can at the target position.</li>
-              <li>Release the right-arm gripper.</li>
+              <li>Use the <em>left</em> arm to pull the drawer open beyond the minimum displacement.</li>
+              <li>Grasp the napkin packet from the tabletop with the <em>right</em> arm.</li>
+              <li>Transfer the packet from the right gripper to the <em>left</em> gripper.</li>
+              <li>Place the packet into the drawer interior and open both grippers.</li>
             </ol>
             <video class="teaser auto-poster" preload="metadata" controls playsinline crossorigin="anonymous">
-              <source src="assets/addgoods1.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
-              <!-- <source src="assets/addgoods1.webm" type="video/webm"> -->
+              <source src="assets/DrawerStore with EFN.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
+              <!-- <source src="assets/DrawerStore with EFN.webm" type="video/webm"> -->
               Your browser does not support inline video.
-              <a href="assets/addgoods1.mp4" download>Download MP4</a>.
+              <a href="assets/DrawerStore with EFN.mp4" download>Download MP4</a>.
             </video>
           </div>
         </div>
       </div>
 
-      <!-- AddGoods - Trial B -->
+      <!-- DrawerStore - without EFN -->
       <div class="column is-12">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
-              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> AddGoods · Trial B
+              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> DrawerStore · without EFN
             </p>
           </header>
           <div class="card-content">
             <p class="content">
-              <strong>Description:</strong> Move a pen holder that is stacked on a tissue pack to the shelf one level above.
+              <strong>Description:</strong> Paired comparison on the most challenging task. Even in a successful rollout, the baseline policy (without EFN) often exhibits hesitant behavior such as repeated grasps and an imprecise final release.
             </p>
             <ol class="content" style="margin-top:-.5rem;">
-              <li>Grasp the pen holder from the top of the tissue pack with the <em>right</em> arm.</li>
-              <li>Lift and move to the upper shelf.</li>
-              <li>Place the pen holder at the target position.</li>
-              <li>Release the right-arm gripper.</li>
+              <li>Use the <em>left</em> arm to pull the drawer open beyond the minimum displacement.</li>
+              <li>Grasp the napkin packet from the tabletop with the <em>right</em> arm.</li>
+              <li>Transfer the packet from the right gripper to the <em>left</em> gripper.</li>
+              <li>Place the packet into the drawer interior and open both grippers.</li>
             </ol>
             <video class="teaser auto-poster" preload="metadata" controls playsinline crossorigin="anonymous">
-              <source src="assets/addgoods2.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
-              <!-- <source src="assets/addgoods2.webm" type="video/webm"> -->
+              <source src="assets/DrawerStore without EFN.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
+              <!-- <source src="assets/DrawerStore without EFN.webm" type="video/webm"> -->
               Your browser does not support inline video.
-              <a href="assets/addgoods2.mp4" download>Download MP4</a>.
+              <a href="assets/DrawerStore without EFN.mp4" download>Download MP4</a>.
             </video>
           </div>
         </div>
       </div>
 
-      <!-- PutBottle -->
+      <!-- ShelfSort - with EFN -->
       <div class="column is-12">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
-              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> PutBottle
+              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> ShelfSort · with EFN
             </p>
           </header>
           <div class="card-content">
             <p class="content">
-              <strong>Description:</strong> Grasp a drink bottle from the shelf with the right arm, place it next to similar items on the shelf, and release the gripper.
+              <strong>Description:</strong> Grasp a drink from the shelf with the right arm and place it into the designated cluster region next to visually similar items, then release the gripper.
             </p>
             <ol class="content" style="margin-top:-.5rem;">
-              <li>Grasp the drink bottle from the shelf with the <em>right</em> arm.</li>
-              <li>Move to the section with similar items.</li>
-              <li>Place the bottle next to similar items.</li>
-              <li>Release the right-arm gripper.</li>
+              <li>Identify the target drink placed at a randomized start position on the shelf.</li>
+              <li>Grasp the target drink with the <em>right</em> arm.</li>
+              <li>Move to the cluster region and place it next to similar drinks (within a fixed 3D tolerance).</li>
+              <li>Release the right-arm gripper at the end of the episode.</li>
             </ol>
             <video class="teaser auto-poster" preload="metadata" controls playsinline crossorigin="anonymous">
-              <source src="assets/putbottle.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
-              <!-- <source src="assets/putbottle.webm" type="video/webm"> -->
+              <source src="assets/ShelfSort with EFN.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
+              <!-- <source src="assets/ShelfSort with EFN.webm" type="video/webm"> -->
               Your browser does not support inline video.
-              <a href="assets/putbottle.mp4" download>Download MP4</a>.
+              <a href="assets/ShelfSort with EFN.mp4" download>Download MP4</a>.
             </video>
           </div>
         </div>
       </div>
 
-      <!-- SortItem -->
+      <!-- StockLift - with EFN -->
       <div class="column is-12">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
-              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> SortItem
+              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> StockLift · with EFN
             </p>
           </header>
           <div class="card-content">
             <p class="content">
-              <strong>Description:</strong> Pick up a drink bottle from a small tabletop with the right arm and place it on the shelf.
+              <strong>Description:</strong> Pick up the top can from a vertical stack on a small table with the right arm and place it onto the shelf within the predefined goal region, then release.
             </p>
             <ol class="content" style="margin-top:-.5rem;">
-              <li>Pick up a drink bottle from the tabletop with the <em>right</em> arm.</li>
-              <li>Move to the target shelf position.</li>
-              <li>Place the bottle on the shelf.</li>
-              <li>Release the right-arm gripper.</li>
+              <li>Grasp the <em>top</em> can from the stack with the <em>right</em> arm.</li>
+              <li>Lift the can cleanly without disturbing the remaining stack.</li>
+              <li>Move to the shelf and place the can in the goal region.</li>
+              <li>Open the right gripper to finish the task.</li>
             </ol>
             <video class="teaser auto-poster" preload="metadata" controls playsinline crossorigin="anonymous">
-              <source src="assets/sortitem.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
-              <!-- <source src="assets/sortitem.webm" type="video/webm"> -->
+              <source src="assets/StockLift with EFN.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
+              <!-- <source src="assets/StockLift with EFN.webm" type="video/webm"> -->
               Your browser does not support inline video.
-              <a href="assets/sortitem.mp4" download>Download MP4</a>.
+              <a href="assets/StockLift with EFN.mp4" download>Download MP4</a>.
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <!-- BottlePlace - with EFN -->
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              <span class="tag is-link is-light" style="margin-right:.5rem;">Task</span> BottlePlace · with EFN
+            </p>
+          </header>
+          <div class="card-content">
+            <p class="content">
+              <strong>Description:</strong> Pick up the plastic bottle from the tabletop with the right arm and place it into the open box that serves as the goal region, then open the gripper.
+            </p>
+            <ol class="content" style="margin-top:-.5rem;">
+              <li>Grasp the bottle from the tabletop with the <em>right</em> arm.</li>
+              <li>Lift and move toward the open box (goal region).</li>
+              <li>Place the bottle inside the box (center lies within the predefined region).</li>
+              <li>Release by fully opening the right-arm gripper.</li>
+            </ol>
+            <video class="teaser auto-poster" preload="metadata" controls playsinline crossorigin="anonymous">
+              <source src="assets/BottlePlace with EFN.mp4" type='video/mp4; codecs="avc1.64001f, mp4a.40.2"'>
+              <!-- <source src="assets/BottlePlace with EFN.webm" type="video/webm"> -->
+              Your browser does not support inline video.
+              <a href="assets/BottlePlace with EFN.mp4" download>Download MP4</a>.
             </video>
           </div>
         </div>
@@ -340,17 +374,16 @@
 
 
 
+
   <!-- Citation -->
   <section class="section" id="bibtex">
     <div class="container">
       <h2 class="section-title">BibTeX</h2>
-      <code class="bibtex">@inproceedings{dejavu_iclr2026,
-  title     = {Dejavu: Post-Deployment Learning for Embodied Agents via Experience Feedback},
-  author    = {Anonymous},
-  booktitle = {International Conference on Learning Representations (ICLR)},
-  year      = {2026},
-  note      = {under double-blind review},
-  url       = {https://dejavu2025.github.io/}
+      <code class="bibtex">@article{wu2025dejavu,
+  title={Dejavu: Towards Experience Feedback Learning for Embodied Intelligence},
+  author={Wu, Shaokai and Ji, Yanbiao and Li, Qiuchang and Zhang, Zhiyi and He, Qichen and Xie, Wenyuan and Zhang, Guodong and Bayramli, Bayram and Ding, Yue and Lu, Hongtao},
+  journal={arXiv preprint arXiv:2510.10181},
+  year={2025}
 }</code>
     </div>
   </section>
@@ -368,7 +401,7 @@
   <footer class="footer">
     <div class="content has-text-centered">
       <p>
-        <strong>Dejavu (EFN)</strong> — ICLR 2026 (under review). Site template inspired by <em>nerfies.github.io</em>.
+        <strong>Dejavu (EFN)</strong> — CVPR 2026 (under review). Site template inspired by <em>nerfies.github.io</em>.
       </p>
     </div>
   </footer>
